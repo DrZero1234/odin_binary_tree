@@ -17,7 +17,7 @@ class BinaryTree {
         return node
     }
 
-        insertRec(root,value) {
+    #insertRec(root,value) {
  
         /*
          * If the tree is empty, return a new node
@@ -29,9 +29,9 @@ class BinaryTree {
  
         /* Otherwise, recur down the tree */
         if (value < root.value)
-            root.leftChild = this.insertRec(root.leftChild, value);
+            root.leftChild = this.#insertRec(root.leftChild, value);
         else if (value > root.value)
-            root.rightChild = this.insertRec(root.rightChild, value);
+            root.rightChild = this.#insertRec(root.rightChild, value);
 
  
         /* return the (unchanged) node pointer */
@@ -39,9 +39,49 @@ class BinaryTree {
     }
 
     insert(key) {
-        this.insertRec(this.root,key);
+        this.#insertRec(this.root,key);
+    }
+
+    #deleteRec(root,val) {
+        // The tree is empty
+        if (root === null) {
+            return root;
+        }
+        // Going down the tree
+        if (val < root.value) {
+            root.leftChild = this.#deleteRec(root.leftChild, val)
+        } else if (val > root.value) {
+            root.rightChild = this.#deleteRec(root.rightChild,val)
+        // If the val is the root Node
+        } else {
+            // If the root DOES NOT have 2 children
+            if (root.leftChild === null) {
+                return root.rightChild
+            } else if (root.rightChild === null) {
+                return root.leftChild
+            }
+
+            // Node WITH 2 children
+            root.value = minRoot(root.rightChild);
+
+            root.rightChild = this.#deleteRec(root.rightChild, root.val)
+        }
+        return root
+    }
+
+
+
+    delete(val) {
+        this.#deleteRec(this.root, val)
     }
  
+        #minNode() {
+        let current_node = this.root;
+        while (current_node.leftChild) {
+            current_node = current_node.leftChild
+        }
+        return current_node
+    }
 
     find(target, root=this.root) {
         if (root === null || root.value === target) {
@@ -73,7 +113,6 @@ short_tree.insert(4)
 short_tree.insert(0)
 short_tree.insert(-15)
 short_tree.insert(45)
-console.log(short_tree.insert(69))
 console.log(short_tree)
 
 
