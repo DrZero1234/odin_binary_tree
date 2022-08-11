@@ -17,7 +17,7 @@ class BinaryTree {
         return node
     }
 
-    #insertRec(root,value) {
+    #insertRec(root = this.root,value) {
  
         /*
          * If the tree is empty, return a new node
@@ -91,6 +91,30 @@ class BinaryTree {
         }
         return this.find(target,root.leftChild,)
     }
+
+    levleOrder(root = this.root) {
+        if (root === null) {
+            return
+        }
+        let queue = [];
+        queue.push(root);
+        while (queue.length > 0) {;
+            let current_node = queue[0];
+            console.log(current_node);
+            if (current_node.leftChild !== null) {
+                queue.push(current_node.leftChild)
+            } else if (current_node.rightChild !== null) {
+                queue.push(current_node.rightChild)
+            };
+            queue.pop();
+            console.log(queue)
+        }
+
+    }
+
+    levlelOrderRec() {
+
+    }
 }
 
 function Node(value) {
@@ -113,6 +137,7 @@ short_tree.insert(4)
 short_tree.insert(0)
 short_tree.insert(-15)
 short_tree.insert(45)
+short_tree.levleOrder()
 console.log(short_tree)
 
 
