@@ -8,7 +8,7 @@ function randomArray(len) {
     return arr
 }
 
-console.log(randomArray(10))
+
 class BinaryTree {
     constructor(arr) {
         const sorted_arr = arr.sort(function(a,b){return a-b})
@@ -140,15 +140,7 @@ class BinaryTree {
         return
     }
 
-    inorder(node = this.root) {
-
-    }
-
-
-
-    // First Walks to the left then to the right
-
-    
+ 
     preorder(node = this.root) {
         if (node === null) {
             return;
@@ -161,12 +153,15 @@ class BinaryTree {
 
     inorder (node = this.root) {
         if (node === null) {
+            
             return
         }
         this.inorder(node.leftChild);
         console.log(node.value);
         this.inorder(node.rightChild);
+
     }
+
 
     postorder(node = this.root) {
         if (node === null) {
@@ -177,9 +172,71 @@ class BinaryTree {
         console.log(node.value)
     }
 
-    
-}
+    height(node = this.root) {
+        if (node === null) {
+            return 0
+        };
 
+        let leftAns = this.height(node.leftChild);
+        let rightAns = this.height(node.rightChild);
+
+        return Math.max(leftAns,rightAns) + 1
+    }
+
+    depth (node,root = this.root) {
+        let depth = -1;
+
+        if (node === null) {
+            return depth
+        };
+
+        if (root == node || (depth = this.depth(node,root.leftChild)) >= 0 ||
+        (depth = this.depth(node,root.rightChild)) >= 0)
+        {
+            return depth + 1
+        }
+
+        return depth
+    }
+
+    isBalanced(root = this.root) {
+        if (root === null) {
+            return true
+        }
+
+        let leftHeight = this.height(root.leftChild);
+        let rightHeight = this.height(root.rightChild);
+
+        if (Math.abs(leftHeight - rightHeight) <= 1 && this.isBalanced(root.leftChild) === true && this.isBalanced(root.rightChild) === true) {
+            return true;
+        }
+        return false;
+    }
+
+    // Goes through every node and returns an array
+    #traverse(node = this.root, array = []) {
+        if (this.root === null) {
+            return
+        }
+        array.push(node.value)
+        if (node.leftChild) {
+            this.#traverse(node.leftChild,array)
+        }
+        if (node.rightChild) {
+            this.#traverse(node.rightChild,array)
+        }
+        return array
+    }
+
+    rebalance() {
+        if (this.isBalanced()) {
+            return
+        }
+        return new BinaryTree(this.#traverse())
+    }
+
+
+}
 function Node(value) {
     value = value;
     rightChild = null;
@@ -192,23 +249,30 @@ function Node(value) {
     }
 }
 
-const tree = new BinaryTree( [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-const short_tree = new BinaryTree([1,2,3])
-const emptyTree = new BinaryTree([]);
-//console.log(tree.root)
-//console.log(tree.find(8))
-short_tree.insert(4)
-short_tree.insert(0)
-short_tree.insert(-15)
-short_tree.insert(45)
 
-short_tree.levelOrder()
-console.log("Recursive: ")
-short_tree.levelOrderRec()
-//console.log(short_tree)
-console.log("Pre order:")
-short_tree.preorder()
+let random_tree = new BinaryTree(randomArray(10));
+console.log(random_tree.isBalanced())
+console.log("Postorder")
+random_tree.postorder();
+console.log("Preorder")
+random_tree.preorder();
 console.log("Inorder")
-short_tree.inorder()
-console.log("Postorder");
-short_tree.postorder()
+random_tree.inorder()
+// Adding 5 new nodes with value greater than 100
+random_tree.insert(152);
+random_tree.insert(452);
+random_tree.insert(154);
+random_tree.insert(106);
+random_tree.insert(301)
+// Checking if the tree is balanced with the newly inserted nodes (should be false)
+console.log(random_tree.isBalanced())
+// Rebalancing the new tree
+random_tree = random_tree.rebalance();
+// Checking if after the rebalance the tree is actually balanced
+console.log(random_tree.isBalanced())
+console.log("Postorder")
+random_tree.postorder();
+console.log("Preorder")
+random_tree.preorder();
+console.log("Inorder")
+random_tree.inorder()
