@@ -11,17 +11,23 @@ function randomArray(len) {
 
 class BinaryTree {
     constructor(arr) {
+        // Sorting the array
         const sorted_arr = arr.sort(function(a,b){return a-b})
         this.root = this.buildTree(sorted_arr)
     }
 
+    // Builds a balanced binary tree
     buildTree(arr,start=0,end=arr.length-1) {
         const sorted_arr = arr.sort(function(a,b){return a-b})
+        // The end condition
         if (start > end) { return null};
+
         let mid = Math.floor((start + end) / 2)
         let node = Node(sorted_arr[mid]);
 
+        // Building the left side of the binary tree by shrinking down the array (lower values)
         node.leftChild = this.buildTree(sorted_arr,start,mid-1)
+        // Building the right side of the binary tree (higher values)
         node.rightChild = this.buildTree(sorted_arr,mid+1,end)
 
         return node
