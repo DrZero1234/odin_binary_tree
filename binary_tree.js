@@ -1,4 +1,14 @@
 
+// Generates an len long array with values between 0-200
+function randomArray(len) {
+    var arr = [];
+    for (var i=0; i<len; i++) {
+        arr.push(Math.round(Math.random() * 200))
+}
+    return arr
+}
+
+console.log(randomArray(10))
 class BinaryTree {
     constructor(arr) {
         const sorted_arr = arr.sort(function(a,b){return a-b})
@@ -128,6 +138,9 @@ class BinaryTree {
             this.levelOrderRec(queue,current_node)
         }
         return
+    }
+
+    inorder(node = this.root) {
 
     }
 
@@ -135,29 +148,36 @@ class BinaryTree {
 
     // First Walks to the left then to the right
 
-    /*
-    levelOrderRec(queue = [],node = this.root) {
+    
+    preorder(node = this.root) {
         if (node === null) {
-            return
+            return;
         }
-        queue.push(node)
-        let current_node = queue[0];
-        while (queue.length > 0) {
-            console.log(current_node.value);
-            if (current_node.leftChild) {
-                queue.shift()
-                this.levelOrderRec(queue,current_node.leftChild)
-            }
-            if (current_node.rightChild) {
-                queue.shift()
-                this.levelOrderRec(queue,current_node.rightChild)
-            }queue.shift()
-        }
-        return
+        console.log(node.value);
+        this.preorder(node.leftChild);
+        this.preorder(node.rightChild);
 
     }
 
-    */
+    inorder (node = this.root) {
+        if (node === null) {
+            return
+        }
+        this.inorder(node.leftChild);
+        console.log(node.value);
+        this.inorder(node.rightChild);
+    }
+
+    postorder(node = this.root) {
+        if (node === null) {
+            return
+        }
+        this.postorder(node.leftChild);
+        this.postorder(node.rightChild);
+        console.log(node.value)
+    }
+
+    
 }
 
 function Node(value) {
@@ -186,4 +206,9 @@ short_tree.levelOrder()
 console.log("Recursive: ")
 short_tree.levelOrderRec()
 //console.log(short_tree)
-console.log(emptyTree.levelOrder())
+console.log("Pre order:")
+short_tree.preorder()
+console.log("Inorder")
+short_tree.inorder()
+console.log("Postorder");
+short_tree.postorder()
