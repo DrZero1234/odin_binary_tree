@@ -92,29 +92,72 @@ class BinaryTree {
         return this.find(target,root.leftChild,)
     }
 
-    levleOrder(root = this.root) {
+    levelOrder(root = this.root) {
         if (root === null) {
-            return
+            return null
         }
         let queue = [];
         queue.push(root);
         while (queue.length > 0) {;
             let current_node = queue[0];
-            console.log(current_node);
-            if (current_node.leftChild !== null) {
+            if (current_node.leftChild) {
                 queue.push(current_node.leftChild)
-            } else if (current_node.rightChild !== null) {
+            }if (current_node.rightChild) {
                 queue.push(current_node.rightChild)
             };
-            queue.pop();
-            console.log(queue)
+            console.log(current_node.value);
+            queue.shift();
         }
 
     }
 
-    levlelOrderRec() {
+    levelOrderRec(queue = [this.root],node = this.root) {
+        if (node === null) {
+            return null
+        }
+        let current_node = queue[0];
+        while (queue.length > 0) {
+            console.log(current_node.value);
+            if (current_node.leftChild) {
+                queue.push(current_node.leftChild)
+            }
+            if (current_node.rightChild) {
+                queue.push(current_node.rightChild)
+            }
+            queue.shift()
+            this.levelOrderRec(queue,current_node)
+        }
+        return
 
     }
+
+
+
+    // First Walks to the left then to the right
+
+    /*
+    levelOrderRec(queue = [],node = this.root) {
+        if (node === null) {
+            return
+        }
+        queue.push(node)
+        let current_node = queue[0];
+        while (queue.length > 0) {
+            console.log(current_node.value);
+            if (current_node.leftChild) {
+                queue.shift()
+                this.levelOrderRec(queue,current_node.leftChild)
+            }
+            if (current_node.rightChild) {
+                queue.shift()
+                this.levelOrderRec(queue,current_node.rightChild)
+            }queue.shift()
+        }
+        return
+
+    }
+
+    */
 }
 
 function Node(value) {
@@ -131,13 +174,16 @@ function Node(value) {
 
 const tree = new BinaryTree( [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 const short_tree = new BinaryTree([1,2,3])
-console.log(tree.root)
-console.log(tree.find(8))
+const emptyTree = new BinaryTree([]);
+//console.log(tree.root)
+//console.log(tree.find(8))
 short_tree.insert(4)
 short_tree.insert(0)
 short_tree.insert(-15)
 short_tree.insert(45)
-short_tree.levleOrder()
-console.log(short_tree)
 
-
+short_tree.levelOrder()
+console.log("Recursive: ")
+short_tree.levelOrderRec()
+//console.log(short_tree)
+console.log(emptyTree.levelOrder())
